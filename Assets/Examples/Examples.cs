@@ -10,23 +10,24 @@ public class Examples : MonoBehaviour
 
     public Mesh mesh;
     public Material material;
-    private ExampleAgent batchBulletAgent;
+    private ExampleAgent exampleAgent;
+
     private void Awake()
     {
-        Application.targetFrameRate = 99999;
-        batchBulletAgent = BRGSystem.CreateBatchAgent<ExampleAgent>(mesh, material, 10000);
-        batchBulletAgent.moveSpeed = moveSpeed;
-        batchBulletAgent.min = min;
-        batchBulletAgent.max = max;
-        batchBulletAgent.Initialize(instanceCount);
+        exampleAgent = BRGSystem.CreateBatchAgent<ExampleAgent>(mesh, material, 10000);
+        exampleAgent.moveSpeed = moveSpeed;
+        exampleAgent.min = min;
+        exampleAgent.max = max;
+        exampleAgent.Initialize(instanceCount);
     }
+
     private void FixedUpdate()
     {
-        batchBulletAgent.Update();
+        exampleAgent.Update();
     }
 
     private void OnDestroy()
     {
-        batchBulletAgent.Dispose();
+        exampleAgent.Dispose();
     }
 }
