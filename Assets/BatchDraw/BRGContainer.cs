@@ -22,6 +22,7 @@ internal class BRGContainer : IDisposable
     private NativeArray<float4> buffer;
     private NativeArray<bool> visibles;
     private NativeReference<int> instanceCountRef;
+    private int float4sPerInstance = 0;
 
     public bool IsDisposed => isDisposed;
 
@@ -33,7 +34,6 @@ internal class BRGContainer : IDisposable
         this.maxInstanceCount = maxInstanceCount;
         this.instanceCountRef = new NativeReference<int>(Allocator.Persistent);
 
-        int float4sPerInstance = 0;
         var metadata = new NativeArray<MetadataValue>(shaderProperties.Length, Allocator.Temp);
         for (int i = 0; i < shaderProperties.Length; i++)
         {
@@ -64,7 +64,7 @@ internal class BRGContainer : IDisposable
     public void Update()
     {
         int instanceCount = math.min(this.instanceCountRef.Value, maxInstanceCount);
-        graphicsBuffer.SetData(buffer, 0, 0, instanceCount);
+        graphicsBuffer.SetData(buffer, 0, 0, instanceCount * float4sPerInstance);
     }
 
     public NativeArray<float4> GetBuffer()
